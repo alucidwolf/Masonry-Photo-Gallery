@@ -5,8 +5,13 @@
       <h1>Slideshow Examples</h1>
     </header>
     <v-content>
-
-      <MasonryGallery />
+      <v-container>
+        <v-btn
+          color="primary"
+          @click="toggleTheme"
+        >Toggle Theme</v-btn>
+        <MasonryGallery />
+      </v-container>
     </v-content>
   </v-app>
 </template>
@@ -19,9 +24,17 @@ export default {
   components: {
     MasonryGallery
   },
-  data: () => ({
-    //
-  })
+  data() {
+    return {
+      darkTheme: false
+    };
+  },
+  methods: {
+    toggleTheme() {
+      this.$vuetify.theme.dark = !this.darkTheme;
+      this.darkTheme = !this.darkTheme;
+    }
+  }
 };
 </script>
 

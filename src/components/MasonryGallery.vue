@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <section class="section-1">
       <h2 class="heading-2">First Section</h2>
       <p class="title">Section Title</p>
@@ -40,9 +40,28 @@
           'grid-item--width3': card.tripleWidth
           }"
           :style="`background-image: url(${card.imageSource})`"
+          @click="openModalAndDisplayThisImage(index)"
         >
         </div>
       </div>
+      <v-dialog
+        max-width="1600"
+        v-model="dialog"
+      >
+        <v-carousel
+          height="calc(100vh - 100px)"
+          v-model="model"
+          hide-delimiters
+          show-arrows-on-hover
+        >
+          <v-carousel-item
+            v-for="(card, index) in cards"
+            :key="index"
+            :src="card.imageSource"
+          >
+          </v-carousel-item>
+        </v-carousel>
+      </v-dialog>
     </section>
     <section class="section-4"></section>
   </div>
@@ -56,6 +75,8 @@ import imagesLoaded from "imagesloaded";
 export default {
   data() {
     return {
+      model: null,
+      dialog: false,
       lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`,
       cards: [
         {
@@ -208,6 +229,12 @@ export default {
       ]
     };
   },
+  methods: {
+    openModalAndDisplayThisImage(idx) {
+      this.dialog = true;
+      this.model = idx;
+    }
+  },
   mounted() {
     ScrollReveal().reveal(".section-1 .heading-2", {
       delay: 200,
@@ -229,7 +256,15 @@ export default {
     const msnry = new Masonry(grid, {
       itemSelector: ".grid-item",
       columnWidth: ".grid-sizer",
-      percentPosition: true
+      stagger: 30
+      // percentPosition: true
+    });
+
+    grid.addEventListener("click", e => {
+      if (e.target.classList.contains("grid-item")) {
+        // e.target.classList.toggle("grid-item--gigante");
+        msnry.layout();
+      }
     });
 
     imagesLoaded(grid).on("progress", () => {
@@ -280,7 +315,8 @@ export default {
 .grid-item--height3 {
   height: 300px;
 }
-.grid-item--height4 {
-  height: 400px;
+.grid-item--gigante {
+  width: 60%;
+  height: 300px;
 }
 </style>
