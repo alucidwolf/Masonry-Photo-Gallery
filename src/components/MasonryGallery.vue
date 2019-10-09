@@ -4,24 +4,46 @@
       <h2 class="heading-2">First Section</h2>
       <p class="title">Section Title</p>
       <p class="description">Section Description</p>
+      <div class="cube">
+        <div class="flippety">
+          <h1>Flippity</h1>
+        </div>
+        <div class="flop">
+          <h2>Flop</h2>
+        </div>
+      </div>
     </section>
     <section class="section-2">
       <masonry
         :cols="3"
         :gutter="30"
       >
-        <v-card
+        <div
           v-for="(card, index) in cards"
           :key="index"
-          class="mx-auto mb-3"
+          class="cube"
         >
-          <v-img
-            class="white--text"
-            :src="card.imageSource"
-          >
-            <v-card-title>I'm a title {{index}}</v-card-title>
-          </v-img>
-        </v-card>
+          <div class="flippety">
+            <v-card class="mx-auto mb-3">
+              <v-img
+                class="white--text"
+                :src="card.imageSource"
+              >
+                <v-card-title>I'm a title {{index}}</v-card-title>
+              </v-img>
+            </v-card>
+          </div>
+          <div class="flop">
+            <v-card class="mx-auto mb-3">
+              <v-img
+                class="white--text"
+                :src="card.imageSource"
+              >
+                <v-card-title>Description</v-card-title>
+              </v-img>
+            </v-card>
+          </div>
+        </div>
       </masonry>
     </section>
     <section class="section-3">
@@ -298,6 +320,10 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 
+  &:hover {
+    cursor: zoom-in;
+  }
+
   img {
     display: block;
     max-width: 100%;
@@ -318,5 +344,35 @@ export default {
 .grid-item--gigante {
   width: 60%;
   height: 300px;
+}
+
+/* ---- card rotation ---- */
+.cube {
+  transition: transform 0.33s;
+  transform-style: preserve-3d;
+  height: 195px;
+  margin-bottom: 15px;
+}
+/* Position the faces */
+.flippety {
+  -webkit-transform: translateZ(100px);
+  transform: translateZ(100px);
+}
+.flop {
+  -webkit-transform: rotateX(-90deg) translateZ(-100px);
+  transform: rotateX(-90deg) translateZ(-100px);
+
+  .v-image__image {
+    opacity: 0.25;
+  }
+
+  .v-card__title {
+    color: #000;
+  }
+}
+/* Rotate the cube */
+.cube:hover {
+  -webkit-transform: rotateX(90deg);
+  transform: rotateX(90deg); /* Text bleed at 90º */
 }
 </style>
